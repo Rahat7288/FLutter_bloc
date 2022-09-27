@@ -33,48 +33,57 @@ class MyhomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          /**
-           * accessing the counter from CounterCubit state
-           * to display the value on the ui we have to implement the (listen:  true) to manupulate the 
-           * ui output
-           */
-          '${BlocProvider.of<CounterCubit>(context, listen: true).state.counter}',
-          style: TextStyle(fontSize: 52.0),
-        ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
+    /**
+     * if we use the BlocBuilder we don't need to use blocProvider listen to be true
+     * we can access the variabls by using the state. operator
+     */
+    return BlocBuilder<CounterCubit, CounterState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Center(
+            child: Text(
               /**
-               * calling the function from CounterCubit cubit.dart file
-               * incriment function
+               * accessing the counter from CounterCubit state
+               * to display the value on the ui we have to implement the (listen:  true) to manupulate the 
+               * ui output
+               * listen helps ui to rebuild
                */
-              BlocProvider.of<CounterCubit>(context).increment();
-            },
-            child: Icon(Icons.add),
-            heroTag: 'increment',
+              '${state.counter}',
+              style: TextStyle(fontSize: 52.0),
+            ),
           ),
-          SizedBox(
-            width: 10.0,
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  /**
+                   * calling the function from CounterCubit cubit.dart file
+                   * incriment function
+                   */
+                  BlocProvider.of<CounterCubit>(context).increment();
+                },
+                child: Icon(Icons.add),
+                heroTag: 'increment',
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  /**
+                   * calling the function from CounterCubit cubit.dart file
+                   * decriment function
+                   */
+                  BlocProvider.of<CounterCubit>(context).decriment();
+                },
+                child: Icon(Icons.remove),
+                heroTag: 'decrement',
+              )
+            ],
           ),
-          FloatingActionButton(
-            onPressed: () {
-              /**
-               * calling the function from CounterCubit cubit.dart file
-               * decriment function
-               */
-              BlocProvider.of<CounterCubit>(context).decriment();
-            },
-            child: Icon(Icons.remove),
-            heroTag: 'decrement',
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }
